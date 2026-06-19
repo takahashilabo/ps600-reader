@@ -29,7 +29,7 @@ Long-press the **top-left button** on the watch until the menu appears. Select *
 
 Open the following URL in Chrome or Edge:
 
-👉 **https://takahashilabo.github.io/ps600-reader/**
+👉 **https://takahashilabo.github.io/ps600-data-exporter/**
 
 ### Step 3 — Connect to the watch
 
