@@ -546,8 +546,8 @@ function parseSummaryTimestamp(bodyPayload) {
   const hour  = bodyPayload[off + 4], min   = bodyPayload[off + 5];
   const sec   = bodyPayload[off + 6], tzQ   = bodyPayload[off + 7];
   const tzOffsetMin = tzQ * 15;
-  const localMs  = Date.UTC(year, month - 1, day, hour, min, sec);
-  return { utc: new Date(localMs - tzOffsetMin * 60 * 1000), tzOffsetMin };
+  // Summary stores UTC time; tzQ indicates the local timezone for display only
+  return { utc: new Date(Date.UTC(year, month - 1, day, hour, min, sec)), tzOffsetMin };
 }
 
 // ================================================================
