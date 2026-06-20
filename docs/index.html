@@ -17,148 +17,70 @@ body {
 .screen { display: none; }
 .screen.active { display: block; }
 
-/* ---- lang toggle ---- */
 #lang-btn {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  background: #fff;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-  padding: 6px 14px;
-  font-size: .8rem;
-  cursor: pointer;
-  color: #4a5568;
-  z-index: 100;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  position: fixed; top: 16px; right: 16px;
+  background: #fff; border: 1px solid #cbd5e0; border-radius: 8px;
+  padding: 6px 14px; font-size: .8rem; cursor: pointer; color: #4a5568;
+  z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.08);
 }
 #lang-btn:hover { background: #edf2f7; }
 
-/* ---- layout ---- */
 .card {
-  max-width: 640px;
-  margin: 48px auto;
-  background: #fff;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+  max-width: 640px; margin: 48px auto; background: #fff;
+  border-radius: 16px; padding: 40px; box-shadow: 0 4px 24px rgba(0,0,0,.08);
 }
 
 h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
-
-.subtitle {
-  color: #718096;
-  font-size: .9rem;
-  margin-bottom: 32px;
-  line-height: 1.6;
-}
-
+.subtitle { color: #718096; font-size: .9rem; margin-bottom: 32px; line-height: 1.6; }
 .badge {
-  display: inline-block;
-  background: #ebf8ff;
-  color: #2b6cb0;
-  font-size: .75rem;
-  padding: 3px 10px;
-  border-radius: 99px;
-  margin-bottom: 24px;
+  display: inline-block; background: #ebf8ff; color: #2b6cb0;
+  font-size: .75rem; padding: 3px 10px; border-radius: 99px; margin-bottom: 24px;
 }
 
-/* ---- buttons ---- */
 .btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: .9rem;
-  font-weight: 500;
-  transition: opacity .15s;
+  padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;
+  font-size: .9rem; font-weight: 500; transition: opacity .15s;
 }
 .btn:disabled { opacity: .4; cursor: not-allowed; }
 .btn:not(:disabled):hover { opacity: .85; }
 
 .btn-primary {
-  background: #3182ce;
-  color: #fff;
-  padding: 14px 32px;
-  font-size: 1rem;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
+  background: #3182ce; color: #fff; padding: 14px 32px; font-size: 1rem;
+  border-radius: 10px; border: none; cursor: pointer; font-weight: 600;
   transition: opacity .15s, transform .1s;
 }
 .btn-primary:not(:disabled):hover { opacity: .9; transform: translateY(-1px); }
 .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
-
 .btn-secondary { background: #edf2f7; color: #4a5568; }
 
-/* ---- boxes ---- */
 .error-box {
-  background: #fff5f5;
-  border: 1px solid #feb2b2;
-  border-radius: 8px;
-  padding: 14px 16px;
-  color: #c53030;
-  font-size: .875rem;
-  line-height: 1.5;
-  margin-top: 16px;
+  background: #fff5f5; border: 1px solid #feb2b2; border-radius: 8px;
+  padding: 14px 16px; color: #c53030; font-size: .875rem; line-height: 1.5; margin-top: 16px;
 }
-
 .info-box {
-  background: #ebf8ff;
-  border: 1px solid #90cdf4;
-  border-radius: 8px;
-  padding: 14px 16px;
-  color: #2c5282;
-  font-size: .875rem;
-  line-height: 1.5;
-  margin-top: 16px;
-  margin-bottom: 20px;
+  background: #ebf8ff; border: 1px solid #90cdf4; border-radius: 8px;
+  padding: 14px 16px; color: #2c5282; font-size: .875rem; line-height: 1.5;
+  margin-top: 16px; margin-bottom: 20px;
 }
 
-/* ---- progress ---- */
 .progress-wrap {
-  background: #e2e8f0;
-  border-radius: 99px;
-  height: 10px;
-  overflow: hidden;
-  margin: 20px 0 12px;
+  background: #e2e8f0; border-radius: 99px; height: 10px; overflow: hidden; margin: 20px 0 12px;
 }
 .progress-bar {
-  height: 100%;
-  background: #3182ce;
-  border-radius: 99px;
-  transition: width .3s ease;
-  width: 0%;
+  height: 100%; background: #3182ce; border-radius: 99px; transition: width .3s ease; width: 0%;
 }
 .progress-text { font-size: 1rem; color: #2d3748; font-weight: 500; }
 .progress-detail { font-size: .8rem; color: #718096; margin-top: 6px; min-height: 1.2em; }
 
-/* ---- period list ---- */
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
+.toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
 .toolbar-summary { margin-left: auto; font-size: .85rem; color: #718096; }
 
 .period-list {
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 16px;
+  border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 16px;
 }
-
 .period-item {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  border-bottom: 1px solid #f0f4f8;
-  cursor: pointer;
-  transition: background .1s;
-  gap: 14px;
+  display: flex; align-items: center; padding: 14px 16px;
+  border-bottom: 1px solid #f0f4f8; cursor: pointer; transition: background .1s; gap: 14px;
 }
 .period-item:last-child { border-bottom: none; }
 .period-item:hover { background: #f7fafc; }
@@ -173,7 +95,6 @@ h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
 .export-info { font-size: .85rem; color: #718096; }
 
 #screen-connect .btn-primary { display: block; width: 100%; margin-top: 24px; }
-
 .done-icon { font-size: 3rem; text-align: center; margin-bottom: 12px; }
 
 @media (max-width: 680px) {
@@ -219,25 +140,33 @@ h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
   </div>
 </div>
 
+<!-- ===================== screen: dates ===================== -->
+<div id="screen-dates" class="screen">
+  <div class="card">
+    <h1 data-i18n="dates_title"></h1>
+    <p class="subtitle" id="dates-subtitle"></p>
+    <div class="toolbar">
+      <button id="btn-dates-select-all" class="btn btn-secondary" data-i18n="select_all"></button>
+      <button id="btn-dates-deselect-all" class="btn btn-secondary" data-i18n="deselect_all"></button>
+    </div>
+    <div id="date-list" class="period-list"></div>
+    <div class="export-bar">
+      <button id="btn-load-bodies" class="btn-primary" data-i18n="dates_load_btn"></button>
+    </div>
+  </div>
+</div>
+
 <!-- ===================== screen: select ===================== -->
 <div id="screen-select" class="screen">
   <div class="card">
     <h1 data-i18n="select_title"></h1>
     <p class="subtitle" id="select-subtitle"></p>
-
     <div class="toolbar">
       <button id="btn-select-all" class="btn btn-secondary" data-i18n="select_all"></button>
       <button id="btn-deselect-all" class="btn btn-secondary" data-i18n="deselect_all"></button>
       <span id="toolbar-summary" class="toolbar-summary"></span>
     </div>
-
     <div id="period-list" class="period-list"></div>
-
-    <div id="load-more-wrap" style="text-align:center;margin-bottom:20px" hidden>
-      <button id="btn-load-more" class="btn btn-secondary" data-i18n="load_more_btn"></button>
-      <p id="load-more-info" style="font-size:.8rem;color:#718096;margin-top:6px"></p>
-    </div>
-
     <div style="margin-bottom:16px">
       <label style="font-size:.875rem;color:#4a5568;display:block;margin-bottom:6px"
              data-i18n="label_desc"></label>
@@ -280,11 +209,12 @@ const STRINGS = {
     connecting:       'Connecting…',
     progress_title:   'Fetching data',
     progress_subtitle:'Please keep the connection active.',
-    progress_preparing: 'Preparing…',
     progress_index:   'Fetching record list…',
-    progress_scanning:'Scanning records…',
-    progress_loading: 'Loading data…',
-    select_title:     'Select data to download',
+    progress_scanning:'Scanning summaries…',
+    progress_loading: 'Loading heart rate data…',
+    dates_title:      'Select dates',
+    dates_load_btn:   'Load selected dates',
+    select_title:     'Select sessions to download',
     select_all:       'Select all',
     deselect_all:     'Deselect all',
     label_desc:       'Watch label (used in filename)',
@@ -293,7 +223,6 @@ const STRINGS = {
     done_title:       'Download complete',
     restart_btn:      'Start over',
     period_unknown:   'Unknown date',
-    load_more_btn:    'Load more (older data)',
     lang_btn:         '日本語',
   },
   ja: {
@@ -307,11 +236,12 @@ const STRINGS = {
     connecting:       '接続中…',
     progress_title:   'データ取得中',
     progress_subtitle:'接続を維持したまましばらくお待ちください。',
-    progress_preparing: '準備中…',
     progress_index:   'レコード一覧を取得中…',
-    progress_scanning:'レコードをスキャン中…',
-    progress_loading: 'データを読み込み中…',
-    select_title:     'ダウンロードするデータを選択',
+    progress_scanning:'サマリーをスキャン中…',
+    progress_loading: '脈拍データを読み込み中…',
+    dates_title:      '日付を選択',
+    dates_load_btn:   '選択した日のデータを読み込む',
+    select_title:     'ダウンロードするセッションを選択',
     select_all:       'すべて選択',
     deselect_all:     'すべて解除',
     label_desc:       '時計の識別名（ファイル名に使用）',
@@ -320,13 +250,11 @@ const STRINGS = {
     done_title:       'ダウンロード完了',
     restart_btn:      '最初からやり直す',
     period_unknown:   '日時不明',
-    load_more_btn:    'さらに読み込む（古いデータ）',
     lang_btn:         'English',
   },
 };
 
 let lang = localStorage.getItem('ps600_lang') || 'en';
-
 function t(key) { return STRINGS[lang][key] || STRINGS.en[key] || key; }
 
 function applyLang() {
@@ -334,18 +262,10 @@ function applyLang() {
   document.title = t('title');
   document.getElementById('lang-btn').textContent = t('lang_btn');
   document.getElementById('watch-label').placeholder = t('label_ph');
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    el.textContent = t(el.dataset.i18n);
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    el.innerHTML = t(el.dataset.i18nHtml);
-  });
-
-  if (allRecords.length > 0 &&
-      document.getElementById('screen-select').classList.contains('active')) {
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  if (allRecords.length > 0 && document.getElementById('screen-select').classList.contains('active')) {
     buildPeriodList(allRecords);
-    updateLoadMoreUI();
   }
 }
 
@@ -368,19 +288,20 @@ const UUID_UL_SIZE       = 'b5a60010-2ed3-e993-896b-cceb986f8d73';
 const UUID_DATA_EVENT    = 'b5a60031-2ed3-e993-896b-cceb986f8d73';
 const UUID_CONTROL_POINT = 'b5a60030-2ed3-e993-896b-cceb986f8d73';
 
-const CMD_CONNECT    = 0x00;
-const CMD_GET_DATA   = 0x20;
-const ELEM_BODY      = 0x00;
-const ELEM_IDX_TABLE = 0x02;
-const ELEM_BODY_SIZE = 0x41;
-const FILTER_NONE    = 0x00;
-const CLASS_LOG      = 0x5100;
-const CLASS_SUMMARY  = 0x5110;
-const IS_FIRST       = 0x80;
-const IS_LAST        = 0x40;
-const ACK_OK         = 0xAA;
-const BLOCK_SIZE     = 32;
+const CMD_CONNECT     = 0x00;
+const CMD_GET_DATA    = 0x20;
+const ELEM_BODY       = 0x00;
+const ELEM_IDX_TABLE  = 0x02;
+const ELEM_BODY_SIZE  = 0x41;
+const FILTER_NONE     = 0x00;
+const CLASS_LOG       = 0x5100;
+const CLASS_SUMMARY   = 0x5110;
+const IS_FIRST        = 0x80;
+const IS_LAST         = 0x40;
+const ACK_OK          = 0xAA;
+const BLOCK_SIZE      = 32;
 const CP_UNLOCK_MUTEX = 0x20;
+const SUMMARY_SIZE    = 128; // fixed length — no need to call GetSize
 
 // ================================================================
 // Utilities
@@ -394,51 +315,29 @@ function concat(...arrays) {
   for (const a of arrays) { out.set(a, off); off += a.length; }
   return out;
 }
-
-function writeLE32(val) {
-  const b = new Uint8Array(4);
-  new DataView(b.buffer).setUint32(0, val, true);
-  return b;
-}
-
-function writeLE16(val) {
-  const b = new Uint8Array(2);
-  new DataView(b.buffer).setUint16(0, val, true);
-  return b;
-}
+function writeLE32(val) { const b = new Uint8Array(4); new DataView(b.buffer).setUint32(0, val, true); return b; }
+function writeLE16(val) { const b = new Uint8Array(2); new DataView(b.buffer).setUint16(0, val, true); return b; }
 
 // ================================================================
 // AsyncQueue
 // ================================================================
 class AsyncQueue {
   constructor() { this._q = []; this._w = []; }
-
-  put(item) {
-    if (this._w.length) this._w.shift()(item);
-    else this._q.push(item);
-  }
-
+  put(item) { if (this._w.length) this._w.shift()(item); else this._q.push(item); }
   get(timeoutMs = 30000) {
     return new Promise((resolve, reject) => {
       if (this._q.length) { resolve(this._q.shift()); return; }
       let done = false;
       const timer = setTimeout(() => {
-        if (done) return;
-        done = true;
+        if (done) return; done = true;
         const i = this._w.findIndex(w => w === waiter);
         if (i >= 0) this._w.splice(i, 1);
         reject(new Error('timeout'));
       }, timeoutMs);
-      const waiter = item => {
-        if (done) return;
-        done = true;
-        clearTimeout(timer);
-        resolve(item);
-      };
+      const waiter = item => { if (done) return; done = true; clearTimeout(timer); resolve(item); };
       this._w.push(waiter);
     });
   }
-
   clear() { this._q = []; }
 }
 
@@ -447,30 +346,16 @@ class AsyncQueue {
 // ================================================================
 class AsyncEvent {
   constructor() { this._set = false; this._val = null; this._w = []; }
-
-  set(val) {
-    this._set = true; this._val = val;
-    this._w.forEach(fn => fn(val));
-    this._w = [];
-  }
-
+  set(val) { this._set = true; this._val = val; this._w.forEach(fn => fn(val)); this._w = []; }
   clear() { this._set = false; this._val = null; }
-
   wait(timeoutMs = 30000) {
     if (this._set) return Promise.resolve(this._val);
     return new Promise((resolve, reject) => {
       let done = false;
       const timer = setTimeout(() => {
-        if (done) return;
-        done = true;
-        reject(new Error('DL_ACK timeout'));
+        if (done) return; done = true; reject(new Error('DL_ACK timeout'));
       }, timeoutMs);
-      this._w.push(val => {
-        if (done) return;
-        done = true;
-        clearTimeout(timer);
-        resolve(val);
-      });
+      this._w.push(val => { if (done) return; done = true; clearTimeout(timer); resolve(val); });
     });
   }
 }
@@ -478,12 +363,10 @@ class AsyncEvent {
 // ================================================================
 // Command builders
 // ================================================================
-function cmdConnect() {
-  return concat(new Uint8Array([CMD_CONNECT]), writeLE32(0));
-}
+function cmdConnect() { return concat(new Uint8Array([CMD_CONNECT]), writeLE32(0)); }
 
-function cmdGetIndexTable(classId, filterVal = FILTER_NONE) {
-  const payload = concat(writeLE16(classId), new Uint8Array([ELEM_IDX_TABLE, filterVal]));
+function cmdGetIndexTable(classId) {
+  const payload = concat(writeLE16(classId), new Uint8Array([ELEM_IDX_TABLE, FILTER_NONE]));
   return concat(new Uint8Array([CMD_GET_DATA]), writeLE32(payload.length), payload);
 }
 
@@ -508,14 +391,12 @@ function makePacket(seq, payload, isFirst, isLast) {
   const b0 = (isFirst ? IS_FIRST : 0) | (isLast ? IS_LAST : 0)
            | ((seq & 0x1F) << 1) | ((len >> 8) & 0x01);
   const pkt = new Uint8Array(20).fill(0xAA);
-  pkt[0] = b0; pkt[1] = len & 0xFF;
-  pkt.set(payload, 2);
+  pkt[0] = b0; pkt[1] = len & 0xFF; pkt.set(payload, 2);
   return pkt;
 }
 
 function divideCommand(data) {
-  const pkts = [];
-  let seq = 0, off = 0;
+  const pkts = []; let seq = 0, off = 0;
   while (off < data.length) {
     const end = Math.min(off + 18, data.length);
     pkts.push(makePacket(seq % BLOCK_SIZE, data.slice(off, end), off === 0, end >= data.length));
@@ -552,13 +433,12 @@ function parseSummaryTimestamp(bodyPayload) {
   const off = 20;
   if (bodyPayload.length < off + 8) return null;
   const v = new DataView(bodyPayload.buffer, bodyPayload.byteOffset);
-  const year = v.getUint16(off, true);
-  const month = bodyPayload[off + 2], day   = bodyPayload[off + 3];
-  const hour  = bodyPayload[off + 4], min   = bodyPayload[off + 5];
-  const sec   = bodyPayload[off + 6], tzQ   = bodyPayload[off + 7];
-  const tzOffsetMin = tzQ * 15;
-  // Summary stores UTC time; tzQ indicates the local timezone for display only
-  return { utc: new Date(Date.UTC(year, month - 1, day, hour, min, sec)), tzOffsetMin };
+  const year  = v.getUint16(off, true);
+  const month = bodyPayload[off + 2], day = bodyPayload[off + 3];
+  const hour  = bodyPayload[off + 4], min = bodyPayload[off + 5];
+  const sec   = bodyPayload[off + 6], tzQ = bodyPayload[off + 7];
+  // Summary stores UTC time; tzQ is display-only
+  return { utc: new Date(Date.UTC(year, month - 1, day, hour, min, sec)), tzOffsetMin: tzQ * 15 };
 }
 
 // ================================================================
@@ -569,7 +449,6 @@ class PS600Protocol {
     this._chars = chars;
     this._dlAck = new AsyncEvent();
     this._ulQueue = new AsyncQueue();
-
     chars.dlOrder.addEventListener('characteristicvaluechanged', e => {
       this._dlAck.set(new Uint8Array(e.target.value.buffer)[0]);
     });
@@ -579,142 +458,142 @@ class PS600Protocol {
     });
   }
 
-  async _ulAck() {
-    await this._chars.ulOrder.writeValue(new Uint8Array([ACK_OK]));
-  }
+  async _ulAck() { await this._chars.ulOrder.writeValue(new Uint8Array([ACK_OK])); }
 
   async _receiveResponse(deadlineMs) {
     const result = [];
     while (true) {
-      const remaining = deadlineMs - Date.now();
       let pkt;
-      try {
-        pkt = await this._ulQueue.get(Math.max(remaining, 1000));
-      } catch {
-        throw new Error('Response timeout');
-      }
+      try { pkt = await this._ulQueue.get(Math.max(deadlineMs - Date.now(), 1000)); }
+      catch { throw new Error('Response timeout'); }
       const seq    = (pkt[0] & 0x3E) >> 1;
       const isLast = !!(pkt[0] & IS_LAST);
       const length = ((pkt[0] & 0x01) << 8) | pkt[1];
       result.push(...pkt.slice(2, 2 + length));
-
-      // Skip block ACK when IS_LAST is also set —
-      // sending two ACKs causes the device to disconnect on the first one.
+      // Skip block ACK when IS_LAST is also set to avoid double-ACK disconnect
       if (seq === 31 && !isLast) await this._ulAck();
-      if (isLast) {
-        await this._ulAck();
-        await delay(100);
-        return new Uint8Array(result);
-      }
+      if (isLast) { await this._ulAck(); await delay(100); return new Uint8Array(result); }
     }
   }
 
   async send(command, timeoutMs = 30000) {
     const packets = divideCommand(command);
-    this._ulQueue.clear();
-    this._dlAck.clear();
-
+    this._ulQueue.clear(); this._dlAck.clear();
     await this._chars.dlSize.writeValue(writeLE32(command.length));
-
     const deadlineMs = Date.now() + timeoutMs;
     for (let b = 0; b < packets.length; b += BLOCK_SIZE) {
       const block = packets.slice(b, b + BLOCK_SIZE);
       this._dlAck.clear();
-      for (const pkt of block) {
-        await this._chars.dlData.writeValueWithoutResponse(pkt);
-        await delay(10);
-      }
-      try {
-        await this._dlAck.wait(Math.max(deadlineMs - Date.now(), 1000));
-      } catch {
-        throw new Error('TX ACK timeout');
-      }
+      for (const pkt of block) { await this._chars.dlData.writeValueWithoutResponse(pkt); await delay(10); }
+      try { await this._dlAck.wait(Math.max(deadlineMs - Date.now(), 1000)); }
+      catch { throw new Error('TX ACK timeout'); }
     }
     return this._receiveResponse(deadlineMs);
   }
 }
 
 // ================================================================
-// Session state (persists across "Load more" clicks)
+// Session state
 // ================================================================
-let gProto = null;
-let gServer = null;
-let gChars = null;
+let gProto = null, gServer = null, gChars = null;
 let gLogIndices = [];
 let gSumIndicesSet = new Set();
-let gScanCursor = 0;           // how many indices from the END have been scanned
-let gSummaryCache = new Map(); // idx -> { utc, tzOffsetMin } | null
+// Map: date string → { indices: [idx, ...], tzOffsetMin }
+let gDateGroups = new Map();
+// Map: idx → { utc, tzOffsetMin } | null  — populated during summary scan
+let gSummaryCache = new Map();
+// Map: date string → checked (boolean) — state for date picker screen
+let gDateCheckStates = new Map();
 
 function gSessionReset() {
   gProto = null; gServer = null; gChars = null;
   gLogIndices = []; gSumIndicesSet = new Set();
-  gScanCursor = 0; gSummaryCache = new Map();
+  gDateGroups = new Map(); gSummaryCache = new Map(); gDateCheckStates = new Map();
 }
 
-async function fetchAndCacheSummary(idx) {
-  if (gSummaryCache.has(idx)) return;
-  if (!gSumIndicesSet.has(idx)) { gSummaryCache.set(idx, null); return; }
-  try {
-    const sSize = parseDataSize(await gProto.send(cmdGetSize(CLASS_SUMMARY, idx)));
-    if (!sSize) { gSummaryCache.set(idx, null); return; }
-    const sPay = parseBody(await gProto.send(cmdGetBody(CLASS_SUMMARY, idx, 0, sSize)));
-    gSummaryCache.set(idx, sPay ? parseSummaryTimestamp(sPay) : null);
-  } catch {
-    gSummaryCache.set(idx, null);
-  }
+// ================================================================
+// Browser timezone fallback
+// ================================================================
+const BROWSER_TZ_OFFSET_MIN = -new Date().getTimezoneOffset();
+
+function effectiveTzOffset(rec) {
+  return (rec.tzOffsetMin !== null && rec.tzOffsetMin !== undefined)
+    ? rec.tzOffsetMin : BROWSER_TZ_OFFSET_MIN;
 }
 
-// Scan backwards from the current cursor to find the next date group.
-// Returns { date, indices } or null if no more data.
-async function scanNextDateGroup(onProgress) {
+function toLocalStr(utcDate, tzOffsetMin) {
+  return new Date(utcDate.getTime() + tzOffsetMin * 60 * 1000)
+    .toISOString().replace('T', ' ').slice(0, 19);
+}
+
+// ================================================================
+// Phase 1: Scan ALL summaries (newest first) — no body data
+// Summary is always 128 bytes, so skip GetSize entirely.
+// Returns Map: dateStr → [idx, ...] sorted oldest index first within each day.
+// ================================================================
+async function scanAllSummaries(onProgress) {
   const N = gLogIndices.length;
-  let currentDate = null;
-  const groupIndices = [];
+  const dateGroups = new Map();     // date → [idx]
+  const noDateIndices = [];         // indices without a summary (appended at the end)
 
-  while (gScanCursor < N) {
-    const i = N - 1 - gScanCursor;
+  for (let i = N - 1; i >= 0; i--) {
     const idx = gLogIndices[i];
-    onProgress({ phase: 'scanning', scanned: gScanCursor, total: N });
+    onProgress({ phase: 'scanning', done: N - 1 - i, total: N });
 
-    await fetchAndCacheSummary(idx);
-    const cached = gSummaryCache.get(idx);
-
-    let dateStr = null;
-    if (cached) {
-      const tzOff = cached.tzOffsetMin ?? BROWSER_TZ_OFFSET_MIN;
-      dateStr = toLocalStr(cached.utc, tzOff).slice(0, 10);
+    let ts = null;
+    if (gSumIndicesSet.has(idx)) {
+      try {
+        const sPay = parseBody(await gProto.send(cmdGetBody(CLASS_SUMMARY, idx, 0, SUMMARY_SIZE)));
+        ts = sPay ? parseSummaryTimestamp(sPay) : null;
+      } catch { ts = null; }
     }
 
-    if (currentDate === null) {
-      currentDate = dateStr ?? '__nodate__';
-    } else if (dateStr !== null && dateStr !== currentDate) {
-      // Date changed — stop before consuming this index
-      break;
+    gSummaryCache.set(idx, ts);
+    if (ts) {
+      const tzOff = ts.tzOffsetMin ?? BROWSER_TZ_OFFSET_MIN;
+      const dateStr = toLocalStr(ts.utc, tzOff).slice(0, 10);
+      if (!dateGroups.has(dateStr)) dateGroups.set(dateStr, { indices: [], tzOffsetMin: ts.tzOffsetMin });
+      dateGroups.get(dateStr).indices.push(idx);
+    } else {
+      noDateIndices.push(idx);
     }
-    // Same date, or no Summary → include in this group
-    groupIndices.push(idx);
-    gScanCursor++;
   }
 
-  if (groupIndices.length === 0) return null;
-  return { date: currentDate, indices: groupIndices.reverse() };
+  // Indices within each day were added newest-first; reverse so they're in order
+  for (const g of dateGroups.values()) g.indices.reverse();
+  // Attach no-date records as a separate group if any exist
+  if (noDateIndices.length > 0) {
+    dateGroups.set('__nodate__', { indices: noDateIndices.reverse(), tzOffsetMin: null });
+  }
+
+  return dateGroups; // iterate gives newest-first ordering from the reverse scan
 }
 
-// Download body data for a set of indices. Returns array of records.
-async function loadGroupBodies(indices, onProgress) {
+// ================================================================
+// Phase 2: Download Log body data for selected dates
+// Uses gSummaryCache populated in phase 1 — no re-fetching of summaries.
+// ================================================================
+async function loadBodiesForDates(selectedDates, onProgress) {
+  const allIndices = [];
+  for (const dateStr of selectedDates) {
+    const g = gDateGroups.get(dateStr);
+    if (g) allIndices.push(...g.indices);
+  }
+
   const records = [];
-  for (let j = 0; j < indices.length; j++) {
-    const idx = indices[j];
-    onProgress({ phase: 'loading', done: j, total: indices.length, index: idx });
+  for (let j = 0; j < allIndices.length; j++) {
+    const idx = allIndices[j];
+    onProgress({ phase: 'loading', done: j, total: allIndices.length, index: idx });
     try {
       const dataSize = parseDataSize(await gProto.send(cmdGetSize(CLASS_LOG, idx)));
       if (!dataSize) continue;
       const payload = parseBody(await gProto.send(cmdGetBody(CLASS_LOG, idx, 0, dataSize)));
       if (!payload) continue;
 
-      const cached = gSummaryCache.get(idx);
-      const startDate = cached?.utc || null;
-      const tzOffsetMin = cached?.tzOffsetMin ?? null;
+      // Use cached Summary — no extra BLE round-trips
+      const ts = gSummaryCache.get(idx) ?? null;
+      const startDate = ts?.utc ?? null;
+      const tzOffsetMin = ts?.tzOffsetMin ?? null;
 
       const samples = [];
       for (let s = 0; s < Math.floor(payload.length / 4); s++) {
@@ -730,34 +609,16 @@ async function loadGroupBodies(indices, onProgress) {
 }
 
 // ================================================================
-// Browser timezone fallback
-// ================================================================
-const BROWSER_TZ_OFFSET_MIN = -new Date().getTimezoneOffset();
-
-function effectiveTzOffset(rec) {
-  return (rec.tzOffsetMin !== null && rec.tzOffsetMin !== undefined)
-    ? rec.tzOffsetMin
-    : BROWSER_TZ_OFFSET_MIN;
-}
-
-function toLocalStr(utcDate, tzOffsetMin) {
-  return new Date(utcDate.getTime() + tzOffsetMin * 60 * 1000)
-    .toISOString().replace('T', ' ').slice(0, 19);
-}
-
-// ================================================================
-// Group records by date
+// Group records by date (for period list)
 // ================================================================
 function groupByDate(records) {
   const groups = new Map();
   for (const rec of records) {
-    let dateStr = t('period_unknown');
-    let timeStr = '';
+    let dateStr = t('period_unknown'), timeStr = '';
     if (rec.startDate) {
       const tz = effectiveTzOffset(rec);
       const iso = toLocalStr(rec.startDate, tz);
-      dateStr = iso.slice(0, 10);
-      timeStr = iso.slice(11, 16);
+      dateStr = iso.slice(0, 10); timeStr = iso.slice(11, 16);
     }
     if (!groups.has(dateStr)) groups.set(dateStr, []);
     groups.get(dateStr).push({ rec, timeStr });
@@ -769,7 +630,7 @@ function groupByDate(records) {
 // CSV generation
 // ================================================================
 function generateCSV(records) {
-  const rows = [['datetime_local', 'utc_offset_min', 'unix_timestamp', 'record_index', 'sample_num', 'heart_rate_bpm']];
+  const rows = [['datetime_local','utc_offset_min','unix_timestamp','record_index','sample_num','heart_rate_bpm']];
   for (const rec of records) {
     const tzOffsetMin = effectiveTzOffset(rec);
     for (const s of rec.samples) {
@@ -789,10 +650,7 @@ function downloadFile(content, filename) {
   const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = Object.assign(document.createElement('a'), { href: url, download: filename });
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 // ================================================================
@@ -816,24 +674,86 @@ function updateProgress(info) {
   } else if (info.phase === 'index') {
     text.textContent = t('progress_index'); bar.style.width = '10%'; det.textContent = '';
   } else if (info.phase === 'scanning') {
-    const pct = info.total > 0 ? Math.round((info.scanned / info.total) * 40 + 10) : 10;
+    const pct = info.total > 0 ? Math.round((info.done / info.total) * 85 + 10) : 10;
     bar.style.width = pct + '%';
     text.textContent = t('progress_scanning');
     det.textContent = lang === 'ja'
-      ? `${info.scanned} / ${info.total} 件確認済み`
-      : `${info.scanned} / ${info.total} checked`;
+      ? `${info.done} / ${info.total} 件完了`
+      : `${info.done} / ${info.total} done`;
   } else if (info.phase === 'loading') {
-    const pct = info.total > 0 ? Math.round((info.done / info.total) * 55 + 40) : 40;
+    const pct = info.total > 0 ? Math.round((info.done / info.total) * 85 + 10) : 10;
     bar.style.width = pct + '%';
     text.textContent = t('progress_loading');
     det.textContent = info.index !== undefined ? `index=${info.index}` : '';
   } else if (info.phase === 'done') {
     bar.style.width = '100%';
-    text.textContent = lang === 'ja'
-      ? `取得完了: ${info.total} セッション`
-      : `Done: ${info.total} sessions`;
-    det.textContent = '';
+    text.textContent = lang === 'ja' ? `完了` : `Done`; det.textContent = '';
   }
+}
+
+// Build the date picker screen after summary scan
+function buildDateList(dateGroups) {
+  const list = document.getElementById('date-list');
+  list.innerHTML = '';
+  gDateCheckStates.clear();
+
+  // Sort newest first (dateGroups is already in reverse order from scan, but Map insertion order matters)
+  const sorted = [...dateGroups.entries()]
+    .filter(([d]) => d !== '__nodate__')
+    .sort(([a],[b]) => a > b ? -1 : 1);
+
+  // Pre-select only the most recent date
+  const mostRecentDate = sorted[0]?.[0];
+
+  for (const [dateStr, group] of sorted) {
+    const count = group.indices.length;
+    const checked = dateStr === mostRecentDate;
+    gDateCheckStates.set(dateStr, checked);
+
+    const div = document.createElement('div');
+    div.className = 'period-item' + (checked ? ' checked' : '');
+    div.innerHTML = `
+      <input type="checkbox" ${checked ? 'checked' : ''} data-date="${dateStr}">
+      <div class="period-info">
+        <div class="period-date">${dateStr}</div>
+      </div>
+      <div class="period-count">${lang === 'ja' ? `${count} セッション` : `${count} session${count !== 1 ? 's' : ''}`}</div>
+    `;
+    const cb = div.querySelector('input');
+    div.addEventListener('click', e => {
+      if (e.target !== cb) cb.checked = !cb.checked;
+      gDateCheckStates.set(dateStr, cb.checked);
+      div.classList.toggle('checked', cb.checked);
+    });
+    list.appendChild(div);
+  }
+
+  // No-date group
+  if (dateGroups.has('__nodate__')) {
+    const count = dateGroups.get('__nodate__').indices.length;
+    gDateCheckStates.set('__nodate__', false);
+    const div = document.createElement('div');
+    div.className = 'period-item';
+    div.innerHTML = `
+      <input type="checkbox" data-date="__nodate__">
+      <div class="period-info">
+        <div class="period-date">${t('period_unknown')}</div>
+      </div>
+      <div class="period-count">${lang === 'ja' ? `${count} セッション` : `${count} session${count !== 1 ? 's' : ''}`}</div>
+    `;
+    const cb = div.querySelector('input');
+    div.addEventListener('click', e => {
+      if (e.target !== cb) cb.checked = !cb.checked;
+      gDateCheckStates.set('__nodate__', cb.checked);
+      div.classList.toggle('checked', cb.checked);
+    });
+    list.appendChild(div);
+  }
+
+  const total = [...dateGroups.values()].reduce((s, g) => s + g.indices.length, 0);
+  document.getElementById('dates-subtitle').textContent = lang === 'ja'
+    ? `全 ${total} セッション / ${dateGroups.size} 日分を取得しました。読み込む日付を選んでください。`
+    : `Found ${total} sessions across ${dateGroups.size} date(s). Select the dates to load.`;
 }
 
 function buildPeriodList(records) {
@@ -841,8 +761,6 @@ function buildPeriodList(records) {
   list.innerHTML = '';
 
   const groups = groupByDate(records);
-
-  // Newest date first
   for (const [dateStr, items] of [...groups.entries()].sort(([a],[b]) => a > b ? -1 : 1)) {
     for (const { rec, timeStr } of items) {
       if (!checkStates.has(rec.index)) checkStates.set(rec.index, true);
@@ -853,7 +771,7 @@ function buildPeriodList(records) {
       const label = timeStr ? `${dateStr} ${timeStr}–` : dateStr;
       const lastSample = rec.samples[rec.samples.length - 1]?.sampleNum + 1 || 0;
       const duration = lang === 'ja' ? `約 ${lastSample} 分` : `~${lastSample} min`;
-      const stats    = lang === 'ja'
+      const stats = lang === 'ja'
         ? `平均 ${avg} / 最低 ${min} / 最高 ${max} BPM ・ ${duration}`
         : `Avg ${avg} / Min ${min} / Max ${max} BPM · ${duration}`;
       const countLabel = lang === 'ja' ? `${hrs.length} 件` : `${hrs.length} samples`;
@@ -869,7 +787,6 @@ function buildPeriodList(records) {
         </div>
         <div class="period-count">${countLabel}</div>
       `;
-
       const cb = div.querySelector('input');
       div.addEventListener('click', e => {
         if (e.target !== cb) cb.checked = !cb.checked;
@@ -877,7 +794,6 @@ function buildPeriodList(records) {
         div.classList.toggle('checked', cb.checked);
         updateToolbarSummary();
       });
-
       list.appendChild(div);
     }
   }
@@ -897,48 +813,9 @@ function updateToolbarSummary() {
     : `Total ${totalSamples.toLocaleString()} samples`;
 }
 
-function updateSelectSubtitle() {
-  const totalSamples = allRecords.reduce((s, r) => s + r.samples.length, 0);
-  const remaining = gLogIndices.length - gScanCursor;
-  let text = lang === 'ja'
-    ? `${allRecords.length} セッション / ${totalSamples.toLocaleString()} サンプルを読み込みました。`
-    : `Loaded ${allRecords.length} sessions / ${totalSamples.toLocaleString()} samples.`;
-  if (remaining > 0) {
-    text += lang === 'ja'
-      ? `（全 ${gLogIndices.length} 件中、最新データを表示）`
-      : ` (Showing latest of ${gLogIndices.length} total records)`;
-  }
-  document.getElementById('select-subtitle').textContent = text;
-}
-
-function updateLoadMoreUI() {
-  const remaining = gLogIndices.length - gScanCursor;
-  const wrap = document.getElementById('load-more-wrap');
-  const btn  = document.getElementById('btn-load-more');
-  const info = document.getElementById('load-more-info');
-
-  if (remaining === 0) { wrap.hidden = true; return; }
-
-  wrap.hidden = false;
-  btn.textContent = t('load_more_btn');
-  const connected = gServer?.connected;
-  btn.disabled = !connected;
-  info.textContent = connected
-    ? (lang === 'ja'
-        ? `未読み込み: あと約 ${remaining} 件のレコードがあります`
-        : `${remaining} older records not yet loaded`)
-    : (lang === 'ja'
-        ? '時計が切断されました。再接続すると続きを読み込めます。'
-        : 'Watch disconnected. Reconnect to load more.');
-}
-
 function disconnectSession() {
-  if (gChars?.ctrlPt) {
-    try { gChars.ctrlPt.writeValue(new Uint8Array([CP_UNLOCK_MUTEX])); } catch {}
-  }
-  if (gServer?.connected) {
-    try { gServer.disconnect(); } catch {}
-  }
+  if (gChars?.ctrlPt) { try { gChars.ctrlPt.writeValue(new Uint8Array([CP_UNLOCK_MUTEX])); } catch {} }
+  if (gServer?.connected) { try { gServer.disconnect(); } catch {} }
 }
 
 // ================================================================
@@ -947,35 +824,27 @@ function disconnectSession() {
 document.getElementById('btn-connect').addEventListener('click', async () => {
   const btn = document.getElementById('btn-connect');
   const errBox = document.getElementById('connect-error');
-  errBox.hidden = true;
-  btn.disabled = true;
-  btn.textContent = t('connecting');
+  errBox.hidden = true; btn.disabled = true; btn.textContent = t('connecting');
 
   let device;
   try {
     device = await navigator.bluetooth.requestDevice({
-      acceptAllDevices: true,
-      optionalServices: [SERVICE_UUID]
+      acceptAllDevices: true, optionalServices: [SERVICE_UUID]
     });
   } catch (e) {
-    btn.disabled = false;
-    btn.textContent = t('connect_btn');
+    btn.disabled = false; btn.textContent = t('connect_btn');
     if (e.name !== 'NotFoundError' && e.name !== 'AbortError') {
-      errBox.textContent = `Error: ${e.message}`;
-      errBox.hidden = false;
+      errBox.textContent = `Error: ${e.message}`; errBox.hidden = false;
     }
     return;
   }
 
   showScreen('screen-progress');
-  gSessionReset();
-  allRecords = [];
-  checkStates = new Map();
+  gSessionReset(); allRecords = []; checkStates = new Map();
 
   try {
     const server = await device.gatt.connect();
     const service = await server.getPrimaryService(SERVICE_UUID);
-
     const chars = {
       dlSize:  await service.getCharacteristic(UUID_DL_SIZE),
       dlData:  await service.getCharacteristic(UUID_DL_DATA),
@@ -986,15 +855,14 @@ document.getElementById('btn-connect').addEventListener('click', async () => {
       ctrlPt:  await service.getCharacteristic(UUID_CONTROL_POINT),
       dataEvt: await service.getCharacteristic(UUID_DATA_EVENT),
     };
-
     await chars.dlOrder.startNotifications();
     await chars.ulData.startNotifications();
     await chars.ulSize.startNotifications();
     await chars.dataEvt.startNotifications();
 
     const proto = new PS600Protocol(chars);
+    gProto = proto; gServer = server; gChars = chars;
 
-    // Initialize: connect command + fetch index tables
     updateProgress({ phase: 'connect' });
     await proto.send(cmdConnect());
 
@@ -1003,90 +871,115 @@ document.getElementById('btn-connect').addEventListener('click', async () => {
     gSumIndicesSet = new Set(parseIndexTable(await proto.send(cmdGetIndexTable(CLASS_SUMMARY))) || []);
 
     if (gLogIndices.length === 0) {
-      throw new Error(lang === 'ja'
-        ? 'データが見つかりませんでした。'
-        : 'No data found on the watch.');
+      throw new Error(lang === 'ja' ? 'データが見つかりませんでした。' : 'No data found on the watch.');
     }
 
-    // Store session (keep connection alive for Load more)
-    gProto = proto;
-    gServer = server;
-    gChars = chars;
+    // Phase 1: scan all summaries (no body data)
+    gDateGroups = await scanAllSummaries(updateProgress);
 
-    // Scan latest date group and download its body data
-    const group = await scanNextDateGroup(updateProgress);
-    if (!group) throw new Error('No records found.');
-
-    const records = await loadGroupBodies(group.indices, updateProgress);
-    if (records.length === 0) {
+    if (gDateGroups.size === 0) {
       throw new Error(lang === 'ja'
         ? 'データが取得できませんでした。時計を近づけて再試行してください。'
         : 'No data retrieved. Move the watch closer and try again.');
     }
 
-    allRecords = records;
-    for (const r of records) checkStates.set(r.index, true);
-
-    // Update UI when watch disconnects unexpectedly
-    device.addEventListener('gattserverdisconnected', () => {
-      if (document.getElementById('screen-select').classList.contains('active')) {
-        updateLoadMoreUI();
-      }
-    });
-
   } catch (e) {
     console.error(e);
-    disconnectSession();
-    gSessionReset();
+    disconnectSession(); gSessionReset();
     showScreen('screen-connect');
-    errBox.textContent = `Error: ${e.message}`;
-    errBox.hidden = false;
-    btn.disabled = false;
-    btn.textContent = t('connect_btn');
+    errBox.textContent = `Error: ${e.message}`; errBox.hidden = false;
+    btn.disabled = false; btn.textContent = t('connect_btn');
     return;
   }
 
-  updateSelectSubtitle();
-  buildPeriodList(allRecords);
-  updateLoadMoreUI();
-  showScreen('screen-select');
+  buildDateList(gDateGroups);
+  showScreen('screen-dates');
 });
 
 // ================================================================
-// Load more
+// Date picker controls
 // ================================================================
-document.getElementById('btn-load-more').addEventListener('click', async () => {
-  if (!gServer?.connected) { updateLoadMoreUI(); return; }
+document.getElementById('btn-dates-select-all').addEventListener('click', () => {
+  document.querySelectorAll('#date-list input[type=checkbox]').forEach(cb => {
+    cb.checked = true;
+    gDateCheckStates.set(cb.dataset.date, true);
+    cb.closest('.period-item').classList.add('checked');
+  });
+});
 
-  showScreen('screen-progress');
-  updateProgress({ phase: 'scanning', scanned: gScanCursor, total: gLogIndices.length });
+document.getElementById('btn-dates-deselect-all').addEventListener('click', () => {
+  document.querySelectorAll('#date-list input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    gDateCheckStates.set(cb.dataset.date, false);
+    cb.closest('.period-item').classList.remove('checked');
+  });
+});
 
-  try {
-    const group = await scanNextDateGroup(updateProgress);
-    if (group) {
-      const newRecords = await loadGroupBodies(group.indices, updateProgress);
-      for (const r of newRecords) {
-        allRecords.push(r);
-        checkStates.set(r.index, true);
-      }
-    }
-  } catch (e) {
-    console.error(e);
+document.getElementById('btn-load-bodies').addEventListener('click', async () => {
+  const selectedDates = [...gDateCheckStates.entries()]
+    .filter(([, v]) => v)
+    .map(([k]) => k);
+
+  if (selectedDates.length === 0) {
+    alert(lang === 'ja' ? '読み込む日付を選択してください。' : 'Please select at least one date.');
+    return;
   }
 
-  updateSelectSubtitle();
+  if (!gServer?.connected) {
+    alert(lang === 'ja'
+      ? '時計が切断されました。最初からやり直してください。'
+      : 'Watch disconnected. Please start over.');
+    return;
+  }
+
+  showScreen('screen-progress');
+  updateProgress({ phase: 'loading', done: 0, total: 1 });
+
+  try {
+    allRecords = await loadBodiesForDates(selectedDates, updateProgress);
+    checkStates = new Map();
+    for (const r of allRecords) checkStates.set(r.index, true);
+
+    // Disconnect after loading body data — no more BLE needed
+    disconnectSession(); gSessionReset();
+
+  } catch (e) {
+    console.error(e);
+    disconnectSession(); gSessionReset();
+    showScreen('screen-connect');
+    document.getElementById('connect-error').textContent = `Error: ${e.message}`;
+    document.getElementById('connect-error').hidden = false;
+    const btn = document.getElementById('btn-connect');
+    btn.disabled = false; btn.textContent = t('connect_btn');
+    return;
+  }
+
+  if (allRecords.length === 0) {
+    showScreen('screen-connect');
+    const errBox = document.getElementById('connect-error');
+    errBox.textContent = lang === 'ja'
+      ? '選択した日付にデータが見つかりませんでした。'
+      : 'No heart rate data found for the selected dates.';
+    errBox.hidden = false;
+    const btn = document.getElementById('btn-connect');
+    btn.disabled = false; btn.textContent = t('connect_btn');
+    return;
+  }
+
+  const totalSamples = allRecords.reduce((s, r) => s + r.samples.length, 0);
+  document.getElementById('select-subtitle').textContent = lang === 'ja'
+    ? `${allRecords.length} セッション / ${totalSamples.toLocaleString()} サンプルを読み込みました。`
+    : `Loaded ${allRecords.length} sessions / ${totalSamples.toLocaleString()} samples.`;
   buildPeriodList(allRecords);
-  updateLoadMoreUI();
   showScreen('screen-select');
 });
 
 // ================================================================
-// Select screen controls
+// Session list controls
 // ================================================================
 document.getElementById('btn-select-all').addEventListener('click', () => {
   document.querySelectorAll('#period-list input[type=checkbox]').forEach(cb => {
-    cb.checked = true;
-    checkStates.set(parseInt(cb.dataset.idx), true);
+    cb.checked = true; checkStates.set(parseInt(cb.dataset.idx), true);
     cb.closest('.period-item').classList.add('checked');
   });
   updateToolbarSummary();
@@ -1094,8 +987,7 @@ document.getElementById('btn-select-all').addEventListener('click', () => {
 
 document.getElementById('btn-deselect-all').addEventListener('click', () => {
   document.querySelectorAll('#period-list input[type=checkbox]').forEach(cb => {
-    cb.checked = false;
-    checkStates.set(parseInt(cb.dataset.idx), false);
+    cb.checked = false; checkStates.set(parseInt(cb.dataset.idx), false);
     cb.closest('.period-item').classList.remove('checked');
   });
   updateToolbarSummary();
@@ -1104,19 +996,13 @@ document.getElementById('btn-deselect-all').addEventListener('click', () => {
 document.getElementById('btn-export').addEventListener('click', () => {
   const selected = allRecords.filter(r => checkStates.get(r.index));
   if (selected.length === 0) {
-    alert(lang === 'ja'
-      ? 'エクスポートするセッションを選択してください。'
-      : 'Please select at least one session.');
+    alert(lang === 'ja' ? 'エクスポートするセッションを選択してください。' : 'Please select at least one session.');
     return;
   }
   const csv = generateCSV(selected);
   const dateStr = new Date().toISOString().slice(0, 10);
-  const label = document.getElementById('watch-label').value.trim()
-    .replace(/[\\/:*?"<>|]/g, '_');
+  const label = document.getElementById('watch-label').value.trim().replace(/[\\/:*?"<>|]/g, '_');
   downloadFile(csv, label ? `ps600_${label}_${dateStr}.csv` : `ps600_${dateStr}.csv`);
-
-  disconnectSession();
-  gSessionReset();
 
   const totalSamples = selected.reduce((s, r) => s + r.samples.length, 0);
   document.getElementById('done-subtitle').textContent = lang === 'ja'
@@ -1126,13 +1012,10 @@ document.getElementById('btn-export').addEventListener('click', () => {
 });
 
 document.getElementById('btn-restart').addEventListener('click', () => {
-  disconnectSession();
-  gSessionReset();
-  allRecords = [];
-  checkStates = new Map();
+  disconnectSession(); gSessionReset();
+  allRecords = []; checkStates = new Map();
   const btn = document.getElementById('btn-connect');
-  btn.disabled = false;
-  btn.textContent = t('connect_btn');
+  btn.disabled = false; btn.textContent = t('connect_btn');
   document.getElementById('connect-error').hidden = true;
   showScreen('screen-connect');
 });
@@ -1140,11 +1023,8 @@ document.getElementById('btn-restart').addEventListener('click', () => {
 // ================================================================
 // Init
 // ================================================================
-if (!navigator.bluetooth) {
-  showScreen('screen-unsupported');
-} else {
-  showScreen('screen-connect');
-}
+if (!navigator.bluetooth) { showScreen('screen-unsupported'); }
+else { showScreen('screen-connect'); }
 applyLang();
 </script>
 </body>
