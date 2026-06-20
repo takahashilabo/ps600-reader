@@ -148,7 +148,7 @@ h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .period-item {
@@ -233,6 +233,11 @@ h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
 
     <div id="period-list" class="period-list"></div>
 
+    <div id="load-more-wrap" style="text-align:center;margin-bottom:20px" hidden>
+      <button id="btn-load-more" class="btn btn-secondary" data-i18n="load_more_btn"></button>
+      <p id="load-more-info" style="font-size:.8rem;color:#718096;margin-top:6px"></p>
+    </div>
+
     <div style="margin-bottom:16px">
       <label style="font-size:.875rem;color:#4a5568;display:block;margin-bottom:6px"
              data-i18n="label_desc"></label>
@@ -277,6 +282,8 @@ const STRINGS = {
     progress_subtitle:'Please keep the connection active.',
     progress_preparing: 'Preparing…',
     progress_index:   'Fetching record list…',
+    progress_scanning:'Scanning records…',
+    progress_loading: 'Loading data…',
     select_title:     'Select data to download',
     select_all:       'Select all',
     deselect_all:     'Deselect all',
@@ -286,6 +293,7 @@ const STRINGS = {
     done_title:       'Download complete',
     restart_btn:      'Start over',
     period_unknown:   'Unknown date',
+    load_more_btn:    'Load more (older data)',
     lang_btn:         '日本語',
   },
   ja: {
@@ -301,6 +309,8 @@ const STRINGS = {
     progress_subtitle:'接続を維持したまましばらくお待ちください。',
     progress_preparing: '準備中…',
     progress_index:   'レコード一覧を取得中…',
+    progress_scanning:'レコードをスキャン中…',
+    progress_loading: 'データを読み込み中…',
     select_title:     'ダウンロードするデータを選択',
     select_all:       'すべて選択',
     deselect_all:     'すべて解除',
@@ -310,6 +320,7 @@ const STRINGS = {
     done_title:       'ダウンロード完了',
     restart_btn:      '最初からやり直す',
     period_unknown:   '日時不明',
+    load_more_btn:    'さらに読み込む（古いデータ）',
     lang_btn:         'English',
   },
 };
@@ -331,10 +342,10 @@ function applyLang() {
     el.innerHTML = t(el.dataset.i18nHtml);
   });
 
-  // rebuild period list if visible (language affects date format & stats labels)
   if (allRecords.length > 0 &&
       document.getElementById('screen-select').classList.contains('active')) {
     buildPeriodList(allRecords);
+    updateLoadMoreUI();
   }
 }
 
@@ -624,62 +635,106 @@ class PS600Protocol {
 }
 
 // ================================================================
-// Download all data
+// Session state (persists across "Load more" clicks)
 // ================================================================
-async function downloadAllData(proto, onProgress) {
-  onProgress({ phase: 'connect' });
-  await proto.send(cmdConnect());
+let gProto = null;
+let gServer = null;
+let gChars = null;
+let gLogIndices = [];
+let gSumIndicesSet = new Set();
+let gScanCursor = 0;           // how many indices from the END have been scanned
+let gSummaryCache = new Map(); // idx -> { utc, tzOffsetMin } | null
 
-  onProgress({ phase: 'index' });
-  const logIndices = parseIndexTable(await proto.send(cmdGetIndexTable(CLASS_LOG))) || [];
-  const sumIndices = new Set(parseIndexTable(await proto.send(cmdGetIndexTable(CLASS_SUMMARY))) || []);
+function gSessionReset() {
+  gProto = null; gServer = null; gChars = null;
+  gLogIndices = []; gSumIndicesSet = new Set();
+  gScanCursor = 0; gSummaryCache = new Map();
+}
 
-  const total = logIndices.length;
-  onProgress({ phase: 'downloading', done: 0, total });
+async function fetchAndCacheSummary(idx) {
+  if (gSummaryCache.has(idx)) return;
+  if (!gSumIndicesSet.has(idx)) { gSummaryCache.set(idx, null); return; }
+  try {
+    const sSize = parseDataSize(await gProto.send(cmdGetSize(CLASS_SUMMARY, idx)));
+    if (!sSize) { gSummaryCache.set(idx, null); return; }
+    const sPay = parseBody(await gProto.send(cmdGetBody(CLASS_SUMMARY, idx, 0, sSize)));
+    gSummaryCache.set(idx, sPay ? parseSummaryTimestamp(sPay) : null);
+  } catch {
+    gSummaryCache.set(idx, null);
+  }
+}
 
-  const records = [];
-  for (let i = 0; i < logIndices.length; i++) {
-    const idx = logIndices[i];
-    onProgress({ phase: 'downloading', done: i, total, index: idx });
+// Scan backwards from the current cursor to find the next date group.
+// Returns { date, indices } or null if no more data.
+async function scanNextDateGroup(onProgress) {
+  const N = gLogIndices.length;
+  let currentDate = null;
+  const groupIndices = [];
 
-    const dataSize = parseDataSize(await proto.send(cmdGetSize(CLASS_LOG, idx)));
-    if (!dataSize) continue;
+  while (gScanCursor < N) {
+    const i = N - 1 - gScanCursor;
+    const idx = gLogIndices[i];
+    onProgress({ phase: 'scanning', scanned: gScanCursor, total: N });
 
-    const payload = parseBody(await proto.send(cmdGetBody(CLASS_LOG, idx, 0, dataSize)));
-    if (!payload) continue;
+    await fetchAndCacheSummary(idx);
+    const cached = gSummaryCache.get(idx);
 
-    let startDate = null, tzOffsetMin = null;
-    if (sumIndices.has(idx)) {
-      try {
-        const sSize = parseDataSize(await proto.send(cmdGetSize(CLASS_SUMMARY, idx)));
-        if (sSize) {
-          const sPay = parseBody(await proto.send(cmdGetBody(CLASS_SUMMARY, idx, 0, sSize)));
-          if (sPay) {
-            const ts = parseSummaryTimestamp(sPay);
-            if (ts) { startDate = ts.utc; tzOffsetMin = ts.tzOffsetMin; }
-          }
-        }
-      } catch {}
+    let dateStr = null;
+    if (cached) {
+      const tzOff = cached.tzOffsetMin ?? BROWSER_TZ_OFFSET_MIN;
+      dateStr = toLocalStr(cached.utc, tzOff).slice(0, 10);
     }
 
-    const samples = [];
-    for (let s = 0; s < Math.floor(payload.length / 4); s++) {
-      const hr = payload[s * 4];
-      if (hr !== 0 && hr !== 0xFF)
-        samples.push({ sampleNum: s, hr, flags1: payload[s*4+1], flags3: payload[s*4+3] });
+    if (currentDate === null) {
+      currentDate = dateStr ?? '__nodate__';
+    } else if (dateStr !== null && dateStr !== currentDate) {
+      // Date changed — stop before consuming this index
+      break;
     }
-    if (samples.length > 0) records.push({ index: idx, startDate, tzOffsetMin, samples });
+    // Same date, or no Summary → include in this group
+    groupIndices.push(idx);
+    gScanCursor++;
   }
 
-  onProgress({ phase: 'done', total: records.length });
+  if (groupIndices.length === 0) return null;
+  return { date: currentDate, indices: groupIndices.reverse() };
+}
+
+// Download body data for a set of indices. Returns array of records.
+async function loadGroupBodies(indices, onProgress) {
+  const records = [];
+  for (let j = 0; j < indices.length; j++) {
+    const idx = indices[j];
+    onProgress({ phase: 'loading', done: j, total: indices.length, index: idx });
+    try {
+      const dataSize = parseDataSize(await gProto.send(cmdGetSize(CLASS_LOG, idx)));
+      if (!dataSize) continue;
+      const payload = parseBody(await gProto.send(cmdGetBody(CLASS_LOG, idx, 0, dataSize)));
+      if (!payload) continue;
+
+      const cached = gSummaryCache.get(idx);
+      const startDate = cached?.utc || null;
+      const tzOffsetMin = cached?.tzOffsetMin ?? null;
+
+      const samples = [];
+      for (let s = 0; s < Math.floor(payload.length / 4); s++) {
+        const hr = payload[s * 4];
+        if (hr !== 0 && hr !== 0xFF)
+          samples.push({ sampleNum: s, hr, flags1: payload[s*4+1], flags3: payload[s*4+3] });
+      }
+      if (samples.length > 0)
+        records.push({ index: idx, startDate, tzOffsetMin, samples });
+    } catch {}
+  }
   return records;
 }
 
-// Browser's local UTC offset in minutes (e.g. JST = +540)
+// ================================================================
+// Browser timezone fallback
+// ================================================================
 const BROWSER_TZ_OFFSET_MIN = -new Date().getTimezoneOffset();
 
 function effectiveTzOffset(rec) {
-  // Use the offset stored in the watch Summary; fall back to browser's local timezone
   return (rec.tzOffsetMin !== null && rec.tzOffsetMin !== undefined)
     ? rec.tzOffsetMin
     : BROWSER_TZ_OFFSET_MIN;
@@ -695,18 +750,15 @@ function toLocalStr(utcDate, tzOffsetMin) {
 // ================================================================
 function groupByDate(records) {
   const groups = new Map();
-
   for (const rec of records) {
     let dateStr = t('period_unknown');
     let timeStr = '';
-
     if (rec.startDate) {
       const tz = effectiveTzOffset(rec);
       const iso = toLocalStr(rec.startDate, tz);
       dateStr = iso.slice(0, 10);
       timeStr = iso.slice(11, 16);
     }
-
     if (!groups.has(dateStr)) groups.set(dateStr, []);
     groups.get(dateStr).push({ rec, timeStr });
   }
@@ -744,7 +796,7 @@ function downloadFile(content, filename) {
 }
 
 // ================================================================
-// UI
+// UI helpers
 // ================================================================
 let allRecords = [];
 let checkStates = new Map();
@@ -763,12 +815,17 @@ function updateProgress(info) {
     text.textContent = t('connecting'); bar.style.width = '5%'; det.textContent = '';
   } else if (info.phase === 'index') {
     text.textContent = t('progress_index'); bar.style.width = '10%'; det.textContent = '';
-  } else if (info.phase === 'downloading') {
-    const pct = info.total > 0 ? Math.round((info.done / info.total) * 85 + 10) : 10;
+  } else if (info.phase === 'scanning') {
+    const pct = info.total > 0 ? Math.round((info.scanned / info.total) * 40 + 10) : 10;
     bar.style.width = pct + '%';
-    text.textContent = lang === 'ja'
-      ? `${info.done} / ${info.total} 件取得中`
-      : `${info.done} / ${info.total} records fetched`;
+    text.textContent = t('progress_scanning');
+    det.textContent = lang === 'ja'
+      ? `${info.scanned} / ${info.total} 件確認済み`
+      : `${info.scanned} / ${info.total} checked`;
+  } else if (info.phase === 'loading') {
+    const pct = info.total > 0 ? Math.round((info.done / info.total) * 55 + 40) : 40;
+    bar.style.width = pct + '%';
+    text.textContent = t('progress_loading');
     det.textContent = info.index !== undefined ? `index=${info.index}` : '';
   } else if (info.phase === 'done') {
     bar.style.width = '100%';
@@ -782,13 +839,14 @@ function updateProgress(info) {
 function buildPeriodList(records) {
   const list = document.getElementById('period-list');
   list.innerHTML = '';
-  checkStates.clear();
 
   const groups = groupByDate(records);
 
-  for (const [dateStr, items] of [...groups.entries()].sort(([a],[b]) => a < b ? -1 : 1)) {
+  // Newest date first
+  for (const [dateStr, items] of [...groups.entries()].sort(([a],[b]) => a > b ? -1 : 1)) {
     for (const { rec, timeStr } of items) {
-      checkStates.set(rec.index, true);
+      if (!checkStates.has(rec.index)) checkStates.set(rec.index, true);
+      const checked = checkStates.get(rec.index);
       const hrs = rec.samples.map(s => s.hr);
       const avg = Math.round(hrs.reduce((a, b) => a + b, 0) / hrs.length);
       const min = Math.min(...hrs), max = Math.max(...hrs);
@@ -801,10 +859,10 @@ function buildPeriodList(records) {
       const countLabel = lang === 'ja' ? `${hrs.length} 件` : `${hrs.length} samples`;
 
       const div = document.createElement('div');
-      div.className = 'period-item checked';
+      div.className = 'period-item' + (checked ? ' checked' : '');
       div.dataset.index = rec.index;
       div.innerHTML = `
-        <input type="checkbox" checked data-idx="${rec.index}">
+        <input type="checkbox" ${checked ? 'checked' : ''} data-idx="${rec.index}">
         <div class="period-info">
           <div class="period-date">${label}</div>
           <div class="period-stats">${stats}</div>
@@ -839,6 +897,50 @@ function updateToolbarSummary() {
     : `Total ${totalSamples.toLocaleString()} samples`;
 }
 
+function updateSelectSubtitle() {
+  const totalSamples = allRecords.reduce((s, r) => s + r.samples.length, 0);
+  const remaining = gLogIndices.length - gScanCursor;
+  let text = lang === 'ja'
+    ? `${allRecords.length} セッション / ${totalSamples.toLocaleString()} サンプルを読み込みました。`
+    : `Loaded ${allRecords.length} sessions / ${totalSamples.toLocaleString()} samples.`;
+  if (remaining > 0) {
+    text += lang === 'ja'
+      ? `（全 ${gLogIndices.length} 件中、最新データを表示）`
+      : ` (Showing latest of ${gLogIndices.length} total records)`;
+  }
+  document.getElementById('select-subtitle').textContent = text;
+}
+
+function updateLoadMoreUI() {
+  const remaining = gLogIndices.length - gScanCursor;
+  const wrap = document.getElementById('load-more-wrap');
+  const btn  = document.getElementById('btn-load-more');
+  const info = document.getElementById('load-more-info');
+
+  if (remaining === 0) { wrap.hidden = true; return; }
+
+  wrap.hidden = false;
+  btn.textContent = t('load_more_btn');
+  const connected = gServer?.connected;
+  btn.disabled = !connected;
+  info.textContent = connected
+    ? (lang === 'ja'
+        ? `未読み込み: あと約 ${remaining} 件のレコードがあります`
+        : `${remaining} older records not yet loaded`)
+    : (lang === 'ja'
+        ? '時計が切断されました。再接続すると続きを読み込めます。'
+        : 'Watch disconnected. Reconnect to load more.');
+}
+
+function disconnectSession() {
+  if (gChars?.ctrlPt) {
+    try { gChars.ctrlPt.writeValue(new Uint8Array([CP_UNLOCK_MUTEX])); } catch {}
+  }
+  if (gServer?.connected) {
+    try { gServer.disconnect(); } catch {}
+  }
+}
+
 // ================================================================
 // Connect flow
 // ================================================================
@@ -849,7 +951,7 @@ document.getElementById('btn-connect').addEventListener('click', async () => {
   btn.disabled = true;
   btn.textContent = t('connecting');
 
-  let device, server;
+  let device;
   try {
     device = await navigator.bluetooth.requestDevice({
       acceptAllDevices: true,
@@ -866,13 +968,15 @@ document.getElementById('btn-connect').addEventListener('click', async () => {
   }
 
   showScreen('screen-progress');
+  gSessionReset();
+  allRecords = [];
+  checkStates = new Map();
 
-  let chars;
   try {
-    server = await device.gatt.connect();
+    const server = await device.gatt.connect();
     const service = await server.getPrimaryService(SERVICE_UUID);
 
-    chars = {
+    const chars = {
       dlSize:  await service.getCharacteristic(UUID_DL_SIZE),
       dlData:  await service.getCharacteristic(UUID_DL_DATA),
       dlOrder: await service.getCharacteristic(UUID_DL_ORDER),
@@ -888,42 +992,97 @@ document.getElementById('btn-connect').addEventListener('click', async () => {
     await chars.ulSize.startNotifications();
     await chars.dataEvt.startNotifications();
 
-    allRecords = await downloadAllData(new PS600Protocol(chars), updateProgress);
-    try { await chars.ctrlPt.writeValue(new Uint8Array([CP_UNLOCK_MUTEX])); } catch {}
+    const proto = new PS600Protocol(chars);
+
+    // Initialize: connect command + fetch index tables
+    updateProgress({ phase: 'connect' });
+    await proto.send(cmdConnect());
+
+    updateProgress({ phase: 'index' });
+    gLogIndices = parseIndexTable(await proto.send(cmdGetIndexTable(CLASS_LOG))) || [];
+    gSumIndicesSet = new Set(parseIndexTable(await proto.send(cmdGetIndexTable(CLASS_SUMMARY))) || []);
+
+    if (gLogIndices.length === 0) {
+      throw new Error(lang === 'ja'
+        ? 'データが見つかりませんでした。'
+        : 'No data found on the watch.');
+    }
+
+    // Store session (keep connection alive for Load more)
+    gProto = proto;
+    gServer = server;
+    gChars = chars;
+
+    // Scan latest date group and download its body data
+    const group = await scanNextDateGroup(updateProgress);
+    if (!group) throw new Error('No records found.');
+
+    const records = await loadGroupBodies(group.indices, updateProgress);
+    if (records.length === 0) {
+      throw new Error(lang === 'ja'
+        ? 'データが取得できませんでした。時計を近づけて再試行してください。'
+        : 'No data retrieved. Move the watch closer and try again.');
+    }
+
+    allRecords = records;
+    for (const r of records) checkStates.set(r.index, true);
+
+    // Update UI when watch disconnects unexpectedly
+    device.addEventListener('gattserverdisconnected', () => {
+      if (document.getElementById('screen-select').classList.contains('active')) {
+        updateLoadMoreUI();
+      }
+    });
 
   } catch (e) {
     console.error(e);
-    if (chars?.ctrlPt) { try { await chars.ctrlPt.writeValue(new Uint8Array([CP_UNLOCK_MUTEX])); } catch {} }
+    disconnectSession();
+    gSessionReset();
     showScreen('screen-connect');
     errBox.textContent = `Error: ${e.message}`;
     errBox.hidden = false;
     btn.disabled = false;
     btn.textContent = t('connect_btn');
-    if (server?.connected) server.disconnect();
     return;
   }
 
-  try { if (server?.connected) server.disconnect(); } catch {}
-
-  if (allRecords.length === 0) {
-    showScreen('screen-connect');
-    errBox.textContent = lang === 'ja'
-      ? 'データが取得できませんでした。時計を近づけて再試行してください。'
-      : 'No data retrieved. Move the watch closer and try again.';
-    errBox.hidden = false;
-    btn.disabled = false;
-    btn.textContent = t('connect_btn');
-    return;
-  }
-
-  const totalSamples = allRecords.reduce((s, r) => s + r.samples.length, 0);
-  document.getElementById('select-subtitle').textContent = lang === 'ja'
-    ? `${allRecords.length} セッション / ${totalSamples.toLocaleString()} サンプルを取得しました。`
-    : `Retrieved ${allRecords.length} sessions / ${totalSamples.toLocaleString()} samples.`;
+  updateSelectSubtitle();
   buildPeriodList(allRecords);
+  updateLoadMoreUI();
   showScreen('screen-select');
 });
 
+// ================================================================
+// Load more
+// ================================================================
+document.getElementById('btn-load-more').addEventListener('click', async () => {
+  if (!gServer?.connected) { updateLoadMoreUI(); return; }
+
+  showScreen('screen-progress');
+  updateProgress({ phase: 'scanning', scanned: gScanCursor, total: gLogIndices.length });
+
+  try {
+    const group = await scanNextDateGroup(updateProgress);
+    if (group) {
+      const newRecords = await loadGroupBodies(group.indices, updateProgress);
+      for (const r of newRecords) {
+        allRecords.push(r);
+        checkStates.set(r.index, true);
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  updateSelectSubtitle();
+  buildPeriodList(allRecords);
+  updateLoadMoreUI();
+  showScreen('screen-select');
+});
+
+// ================================================================
+// Select screen controls
+// ================================================================
 document.getElementById('btn-select-all').addEventListener('click', () => {
   document.querySelectorAll('#period-list input[type=checkbox]').forEach(cb => {
     cb.checked = true;
@@ -956,6 +1115,9 @@ document.getElementById('btn-export').addEventListener('click', () => {
     .replace(/[\\/:*?"<>|]/g, '_');
   downloadFile(csv, label ? `ps600_${label}_${dateStr}.csv` : `ps600_${dateStr}.csv`);
 
+  disconnectSession();
+  gSessionReset();
+
   const totalSamples = selected.reduce((s, r) => s + r.samples.length, 0);
   document.getElementById('done-subtitle').textContent = lang === 'ja'
     ? `${selected.length} セッション・${totalSamples.toLocaleString()} サンプルを保存しました。`
@@ -964,8 +1126,10 @@ document.getElementById('btn-export').addEventListener('click', () => {
 });
 
 document.getElementById('btn-restart').addEventListener('click', () => {
+  disconnectSession();
+  gSessionReset();
   allRecords = [];
-  checkStates.clear();
+  checkStates = new Map();
   const btn = document.getElementById('btn-connect');
   btn.disabled = false;
   btn.textContent = t('connect_btn');
